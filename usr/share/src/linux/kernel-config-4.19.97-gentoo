@@ -671,7 +671,8 @@ CONFIG_KVM=y
 CONFIG_KVM_INTEL=y
 # CONFIG_KVM_AMD is not set
 # CONFIG_KVM_MMU_AUDIT is not set
-# CONFIG_VHOST_NET is not set
+CONFIG_VHOST_NET=y
+CONFIG_VHOST=y
 # CONFIG_VHOST_CROSS_ENDIAN_LEGACY is not set
 
 #
@@ -1606,7 +1607,7 @@ CONFIG_GENEVE=y
 # CONFIG_GTP is not set
 # CONFIG_MACSEC is not set
 # CONFIG_NETCONSOLE is not set
-# CONFIG_TUN is not set
+CONFIG_TUN=y
 # CONFIG_TUN_VNET_CROSS_LE is not set
 # CONFIG_VETH is not set
 # CONFIG_NLMON is not set
