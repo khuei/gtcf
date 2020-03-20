@@ -1,0 +1,9 @@
+[submodule "var/git/dmenu"]
+	path = var/git/dmenu
+	url = https://github.com/Z5483/dmenu
+[submodule "var/git/st"]
+	path = var/git/st
+	url = https://github.com/Z5483/st
+[submodule "var/git/dwm"]
+	path = var/git/dwm
+	url = https://github.com/Z5483/dwm
