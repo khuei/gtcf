@@ -1,0 +1,5 @@
+media-gfx/feh imlib2 curl
+media-video/ffmpeg mp3 libdrm opencl openh264 png jpeg X
+media-video/ffmpegthumbnailer jpeg png X
+media-sound/ncmpcpp visualizer
+media-gfx/imagemagick opencl truetype X fontconfig xml jpeg png
