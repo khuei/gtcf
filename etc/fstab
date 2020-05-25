@@ -1,6 +1,6 @@
-UUID=4AC3-E042  /boot   vfat    noatime         1       2
+UUID=4AC3-E042  /boot   vfat    noauto,noatime         1       2
 UUID=13e5de0d-1614-4ae8-b9dd-6da129ef0ae0       /       ext4    noatime         0       1
 UUID=f884282f-0c75-45f8-8baf-1835bc64d2e2       none    swap    sw      0       0
 UUID=c26b6f71-fb05-49bb-ae69-e1f3a00751b4       /home   ext4    noatime        0       1
-tmpfs   /var/tmp/portage        tmpfs   size=4G,uid=portage,gid=portage,mode=775,noatime        0       0
+tmpfs   /var/tmp/portage        tmpfs   size=6G,uid=portage,gid=portage,mode=775,noatime        0       0
 tmpfs   /tmp    tmpfs   size=2G,mode=1777,noatime         0       0
