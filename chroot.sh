@@ -45,7 +45,7 @@ emerge \
 	sys-devel/clang                 \
 	sys-devel/lld                   \
 	sys-devel/llvm                  \
-	sys-kernel/genkernel            \
+	sys-kernel/genkernel
 
 # add config files
 mkdir -p /etc/syslog-ng
