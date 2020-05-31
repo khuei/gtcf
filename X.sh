@@ -10,7 +10,9 @@ fi
 # install packages
 emerge \
 	media-libs/mesa         \
+	x11-apps/setxkbmap      \
 	x11-apps/xinit          \
+	x11-apps/xmodmap        \
 	x11-apps/xrandr         \
 	x11-base/xorg-server    \
 	x11-libs/libX11         \
@@ -20,7 +22,7 @@ emerge \
 	x11-misc/dmenu          \
 	x11-misc/xclip          \
 	x11-terms/st            \
-	x11-wm/dwm              \
+	x11-wm/dwm
 
 # add config files
 mkdir -p /usr/share/cursors/xorg-x11
