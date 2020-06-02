@@ -17,9 +17,9 @@ cp -r $REPO/etc/portage/env /mnt/gentoo/etc/portage/env
 mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
 
 mkdir --parents /mnt/gentoo/etc/portage/repos.conf
-cp $REPO/etc/portage/repos.conf/overlay.conf /mnt/gentoo/etc/portage/repos.conf
+cp $REPO/etc/portage/repos.conf/overlay.conf /mnt/gentoo/etc/portage/repos.conf/
 
-cp $REPO/etc/resolve.conf* /mnt/gentoo/etc
+cp $REPO/etc/resolve.conf* /mnt/gentoo/etc/
 
 # mount necessary filesystems
 mount --types proc /proc /mnt/gentoo/proc

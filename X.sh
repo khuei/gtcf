@@ -26,13 +26,13 @@ emerge \
 
 # add config files
 mkdir -p /usr/share/cursors/xorg-x11
-cp -r $REPO/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11
+cp -r $REPO/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
 
 mkdir -p /etc/X11/xorg.conf.d
-cp $REPO/etc/X11/xorg.conf.d/* /etc/X11/xorg.conf.d
+cp $REPO/etc/X11/xorg.conf.d/* /etc/X11/xorg.conf.d/
 
 mkdir -p /etc/fonts
-cp $REPO/etc/fonts/fonts.conf /etc/fonts
+cp $REPO/etc/fonts/fonts.conf /etc/fonts/
 
 # create xorg.conf through `Xorg -configure`
 Xorg -configure
