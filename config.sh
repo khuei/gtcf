@@ -29,6 +29,8 @@ cp $REPO/etc/fstab /etc/fstab
 
 cp $REPO/etc/genkernel.conf /etc/genkernel.conf
 
+cp $REPO/etc/portage/make.conf /etc/portage/make.conf
+
 cp $REPO/etc/rc.conf /etc/rc.conf
 
 cp $REPO/etc/sysctl.conf /etc/sysctl.conf
