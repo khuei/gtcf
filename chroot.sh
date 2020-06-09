@@ -48,15 +48,11 @@ emerge \
 	sys-kernel/genkernel
 
 # add config files
-mkdir -p /etc/syslog-ng
-cp      $REPO/etc/syslog-ng/syslog-ng.conf      /etc/syslog-ng/syslog-ng.conf
-
 mkdir -p /var/tmp/ccache
 cp      $REPO/var/tmp/ccache/ccache.conf        /var/tmp/ccache/
 
 cp      $REPO/etc/fstab              /etc/fstab
 cp      $REPO/etc/genkernel.conf     /etc/genkernel.conf
-cp      $REPO/etc/rc.conf            /etc/rc.conf
 cp      $REPO/etc/sysctl.conf        /etc/sysctl.conf
 
 # configure linux kernel
