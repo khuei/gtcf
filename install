@@ -7,8 +7,7 @@ fi
 
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)
 
-mkdir -p /etc/X11/xorg.conf.d
-cp $REPO/etc/X11/xorg.conf.d/* /etc/X11/xorg.conf.d/
+cp -r $REPO/etc/X11/* /etc/X11/
 
 mkdir -p /etc/fonts
 cp $REPO/etc/fonts/fonts.conf /etc/fonts/
