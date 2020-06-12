@@ -4,4 +4,3 @@ PARTLABEL=swap       none    swap    sw      0       0
 PARTLABEL=home       /home   ext4    noatime        0       1
 proc    /proc   proc    nosuid,nodev,noexec,hidepid=2,gid=wheel         0       0
 tmpfs   /var/tmp/portage        tmpfs   size=6G,uid=portage,gid=portage,mode=775,noatime        0       0
-tmpfs   /tmp    tmpfs   size=2G,mode=1777,noatime         0       0
