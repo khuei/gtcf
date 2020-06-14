@@ -21,6 +21,8 @@ cp -r $REPO/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
 mkdir -p /var/tmp/ccache
 cp $REPO/var/tmp/ccache/ccache.conf /var/tmp/ccache
 
+cp -r $REPO/boot/loader/* /boot/loader/
+
 cp $REPO/etc/fstab /etc/fstab
 
 cp $REPO/etc/genkernel.conf /etc/genkernel.conf
