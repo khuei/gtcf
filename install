@@ -7,6 +7,7 @@ fi
 
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)
 
+mkdir -p etc/X11
 cp -r $REPO/etc/X11/* /etc/X11/
 
 mkdir -p /etc/fonts
@@ -33,6 +34,7 @@ cp $REPO/usr/share/consolefonts/* /usr/share/consolefonts/
 
 cp -r $REPO/etc/portage/* /etc/portage/
 
+mkdir -p /etc/systemd
 cp -r $REPO/etc/systemd/* /etc/systemd/
 
 echo 'success!'
