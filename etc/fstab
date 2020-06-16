@@ -1,6 +1,7 @@
-PARTLABEL=boot  /boot   vfat    noauto,noatime         1       2
-PARTLABEL=rootfs       /       ext4    noatime         0       1
-PARTLABEL=swap       none    swap    sw      0       0
-PARTLABEL=home       /home   ext4    noatime        0       1
-proc    /proc   proc    nosuid,nodev,noexec,hidepid=2,gid=wheel         0       0
-tmpfs   /var/tmp/portage        tmpfs   size=6G,uid=portage,gid=portage,mode=775,noatime        0       0
+/dev/sda1 /boot vfat noauto,noatime 1 2
+/dev/sda2 none swap sw 0 0
+/dev/mapper/gentoo-root / ext4 defaults 0 0
+/dev/mapper/gentoo-var /var ext4 defaults 0 0
+/dev/sda4 /home ext4 defaults 0 0
+proc  /proc   proc    nosuid,nodev,noexec,hidepid=2,gid=wheel 0 0
+tmpfs /var/tmp/portage tmpfs size=6G,uid=portage,gid=portage,mode=775,noatime 0 0
