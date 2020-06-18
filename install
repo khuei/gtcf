@@ -37,4 +37,7 @@ cp -r $REPO/etc/portage/* /etc/portage/
 mkdir -p /etc/systemd
 cp -r $REPO/etc/systemd/* /etc/systemd/
 
+mkdir -p /etc/layman
+cp -r $REPOS/etc/layman/* /etc/layman/
+
 echo 'success!'
