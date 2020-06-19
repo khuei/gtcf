@@ -1,0 +1,34 @@
+#!/bin/busybox sh
+
+rescue_shell() {
+	echo "Something went wrong. Dropping to a shell."
+		exec sh
+}
+
+cmdline() {
+	local value
+	value=" $(cat /proc/cmdline) "
+	value="${value##* ${1}=}"
+	value="${value%% *}"
+	[ "${value}" != "" ] && echo "${value}"
+}
+
+cryptsetup --tries 5 luksOpen $(cmdline root) root
+
+# mount /proc and /sys
+mount --types proc none /proc
+mount --types sysfs none /sys
+mount --types devtmpfs none /dev
+
+lvm vgscan --mknodes
+lvm lvchange -a ly gentoo
+lvm vgscan --mknodes
+
+# mount /
+mount -o ro $(findfs $(cmdline real_root)) /mnt/root || rescue_shell
+
+umount /proc
+umount /sys
+umount /dev
+
+exec switch_root /mnt/root /sbin/init
