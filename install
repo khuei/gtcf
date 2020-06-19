@@ -40,4 +40,7 @@ cp -r $REPO/etc/systemd/* /etc/systemd/
 mkdir -p /etc/layman
 cp -r $REPOS/etc/layman/* /etc/layman/
 
+mkdir -p /etc/udev
+cp -r $REPO/etc/udev/* /etc/udev/
+
 echo 'success!'
