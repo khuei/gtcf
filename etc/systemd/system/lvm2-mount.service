@@ -1,0 +1,15 @@
+[Unit]
+Description=Restore Mapper Devices
+Before=local-fs-pre.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/lvm vgscan --mknodes
+ExecStart=/sbin/lvm vgchange -a ly gentoo
+ExecStart=/sbin/lvm vgscan --mknodes
+ExecStart=/sbin/dmsetup mknodes
+ExecStart=/bin/mount -a
+
+[Install]
+WantedBy=sysinit.target
