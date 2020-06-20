@@ -41,6 +41,12 @@ if (qlist -I | grep systemd) > /dev/null; then
 	cp -r $REPO/boot/loader/* /boot/loader/
 fi
 
+if (qlist -I | grep tmux) > /dev/null; then
+	for terminfo in $(ls "$REPO/etc/terminfo"); do
+		tic -sx $terminfo
+	done
+fi
+
 if (qlist -I | grep xorg-server) > /dev/null; then
 	mkdir -p /etc/X11
 	cp -r $REPO/etc/X11/* /etc/X11/
