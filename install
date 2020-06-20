@@ -39,6 +39,8 @@ if (qlist -I | grep systemd) > /dev/null; then
 	cp -r $REPO/etc/udev/* /etc/udev/
 
 	cp -r $REPO/boot/loader/* /boot/loader/
+
+	cp $REPO/etc/vconsole.conf /etc/vconsole.conf
 fi
 
 if (qlist -I | grep tmux) > /dev/null; then
