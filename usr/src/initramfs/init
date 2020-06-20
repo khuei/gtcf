@@ -32,3 +32,4 @@ umount /sys
 umount /dev
 
 exec switch_root /mnt/root /sbin/init
+dmsetup mknodes
