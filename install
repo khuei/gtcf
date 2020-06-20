@@ -5,7 +5,7 @@ if [ "$EUID" -ne 0 ]; then
 	exit 0
 fi
 
-REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)
+REPO=$(cd $(dirname ${BASH_SOURCE[0]}) > /dev/null && pwd -P)
 
 cp $REPO/etc/fstab /etc/fstab
 cp $REPO/etc/sysctl.conf /etc/sysctl.conf
