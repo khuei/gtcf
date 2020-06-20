@@ -7,41 +7,50 @@ fi
 
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)
 
-mkdir -p /etc/X11
-cp -r $REPO/etc/X11/* /etc/X11/
-
-mkdir -p /etc/fonts
-cp $REPO/etc/fonts/fonts.conf /etc/fonts/
-
-mkdir -p /etc/libvirt
-cp $REPO/etc/libvirt/libvirtd.conf /etc/libvirt/
-
-mkdir -p /usr/share/cursors/xorg-x11
-cp -r $REPO/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
-
-mkdir -p /var/tmp/ccache
-cp $REPO/var/tmp/ccache/ccache.conf /var/tmp/ccache
-
-cp -r $REPO/boot/loader/* /boot/loader/
-
 cp $REPO/etc/fstab /etc/fstab
-
-cp $REPO/etc/genkernel.conf /etc/genkernel.conf
-
 cp $REPO/etc/sysctl.conf /etc/sysctl.conf
-
 cp $REPO/usr/share/consolefonts/* /usr/share/consolefonts/
-
 cp -r $REPO/etc/portage/* /etc/portage/
 
-mkdir -p /etc/systemd
-cp -r $REPO/etc/systemd/* /etc/systemd/
+if command -v Xorg > /dev/null; then
+	mkdir -p /etc/X11
+	cp -r $REPO/etc/X11/* /etc/X11/
 
-mkdir -p /etc/layman
-cp -r $REPOS/etc/layman/* /etc/layman/
+	mkdir -p /usr/share/cursors/xorg-x11
+	cp -r $REPO/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
 
-mkdir -p /etc/udev
-cp -r $REPO/etc/udev/* /etc/udev/
+	mkdir -p /etc/fonts
+	cp $REPO/etc/fonts/fonts.conf /etc/fonts/
+fi
+
+if command -v genkernel > /dev/null; then
+	cp $REPO/etc/genkernel.conf /etc/genkernel.conf
+fi
+
+if command -v layman > /dev/null; then
+	mkdir -p /etc/layman
+	cp -r $REPOS/etc/layman/* /etc/layman/
+fi
+
+if (qlist -I | grep libvirt) > /dev/null; then
+	mkdir -p /etc/libvirt
+	cp $REPO/etc/libvirt/libvirtd.conf /etc/libvirt/
+fi
+
+if (qlist -I | grep ccache) > /dev/null; then
+	mkdir -p /var/tmp/ccache
+	cp $REPO/var/tmp/ccache/ccache.conf /var/tmp/ccache
+fi
+
+if (qlist -I | grep systemd) > /dev/null; then
+	mkdir -p /etc/systemd
+	cp -r $REPO/etc/systemd/* /etc/systemd/
+
+	mkdir -p /etc/udev
+	cp -r $REPO/etc/udev/* /etc/udev/
+
+	cp -r $REPO/boot/loader/* /boot/loader/
+fi
 
 mkdir -p /usr/src/initramfs/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys}
 cp --archive /dev/{null,console,tty,sda1} /usr/src/initramfs/dev/
