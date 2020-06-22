@@ -10,6 +10,7 @@ REPO=$(cd $(dirname ${BASH_SOURCE[0]}) > /dev/null && pwd -P)
 cp $REPO/etc/fstab /etc/fstab
 cp $REPO/etc/sysctl.conf /etc/sysctl.conf
 cp $REPO/usr/share/consolefonts/* /usr/share/consolefonts/
+cp $REPO/usr/share/fonts/* /usr/share/fonts/
 cp -r $REPO/etc/portage/* /etc/portage/
 
 if (qlist -I | grep ccache) > /dev/null; then
