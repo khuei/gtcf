@@ -1,70 +1,102 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 if [ "$EUID" -ne 0 ]; then
 	echo "Please run as root."
 	exit 0
 fi
 
-REPO=$(cd $(dirname ${BASH_SOURCE[0]}) > /dev/null && pwd -P)
+cp -v $(pwd -P)/etc/fstab /etc/fstab
+cp -v $(pwd -P)/etc/sysctl.conf /etc/sysctl.conf
+cp -v $(pwd -P)/usr/share/consolefonts/* /usr/share/consolefonts/
+cp -v $(pwd -P)/usr/share/fonts/* /usr/share/fonts/
 
-cp $REPO/etc/fstab /etc/fstab
-cp $REPO/etc/sysctl.conf /etc/sysctl.conf
-cp $REPO/usr/share/consolefonts/* /usr/share/consolefonts/
-cp $REPO/usr/share/fonts/* /usr/share/fonts/
-cp -r $REPO/etc/portage/* /etc/portage/
+if (qlist -I | grep portage) > /dev/null; then
+	cp -rv $(pwd -P)/etc/portage/* /etc/portage/
+fi
 
 if (qlist -I | grep ccache) > /dev/null; then
-	mkdir -p /var/tmp/ccache
-	cp $REPO/var/tmp/ccache/ccache.conf /var/tmp/ccache
+	if [[ ! -d /var/tmp/ccahe ]]; then
+		mkdir -p /var/tmp/ccache
+	fi
+
+	cp -v $(pwd -P)/var/tmp/ccache/ccache.conf /var/tmp/ccache/ccache.conf
 fi
 
 if (qlist -I | grep genkernel) > /dev/null; then
-	cp $REPO/etc/genkernel.conf /etc/genkernel.conf
+	cp -v $(pwd -P)/etc/genkernel.conf /etc/genkernel.conf
+fi
+
+if (qlist -I | grep gentoo-sources) > /dev/null; then
+	cp -v $(pwd -P)/usr/src/linux/.config /usr/src/linux/.config
 fi
 
 if (qlist -I | grep layman) > /dev/null; then
-	mkdir -p /etc/layman
-	cp -r $REPOS/etc/layman/* /etc/layman/
+	if [[ ! -d /etc/layman ]]; then
+		mkdir -p /etc/layman
+	fi
+
+	cp -v $(pwd -P)S/etc/layman/layman.cfg /etc/layman/layman.cfg
 fi
 
 if (qlist -I | grep libvirt) > /dev/null; then
-	mkdir -p /etc/libvirt
-	cp $REPO/etc/libvirt/libvirtd.conf /etc/libvirt/
+	if [[ ! -d /etc/libvirt ]]; then
+		mkdir -p /etc/libvirt
+	fi
+
+	cp -v $(pwd -P)/etc/libvirt/libvirtd.conf /etc/libvirt/libvirtd.conf
 fi
 
 if (qlist -I | grep systemd) > /dev/null; then
-	mkdir -p /etc/systemd
-	cp -r $REPO/etc/systemd/* /etc/systemd/
+	if [[ ! -d /etc/systemd ]]; then
+		mkdir -p /etc/systemd
+	fi
 
-	mkdir -p /etc/udev
-	cp -r $REPO/etc/udev/* /etc/udev/
+	cp -rv $(pwd -P)/etc/systemd/* /etc/systemd/
 
-	cp -r $REPO/boot/loader/* /boot/loader/
+	if [[ ! -d /etc/udev ]]; then
+		mkdir -p /etc/udev
+	fi
 
-	cp $REPO/etc/vconsole.conf /etc/vconsole.conf
+	cp -rv $(pwd -P)/etc/udev/* /etc/udev/
+
+	cp -rv $(pwd -P)/boot/loader/* /boot/loader/
+
+	cp -v $(pwd -P)/etc/vconsole.conf /etc/vconsole.conf
 fi
 
 if (qlist -I | grep tmux) > /dev/null; then
-	for terminfo in $(ls "$REPO/etc/terminfo"); do
+	for terminfo in $(ls "$(pwd -P)/etc/terminfo"); do
 		tic -sx $terminfo
 	done
 fi
 
 if (qlist -I | grep xorg-server) > /dev/null; then
-	mkdir -p /etc/X11
-	cp -r $REPO/etc/X11/* /etc/X11/
+	if [[ ! -d /etc/X11 ]]; then
+		mkdir -p /etc/X11
+	fi
 
-	mkdir -p /usr/share/cursors/xorg-x11
-	cp -r $REPO/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
+	cp -rv $(pwd -P)/etc/X11/* /etc/X11/
 
-	mkdir -p /etc/fonts
-	cp $REPO/etc/fonts/fonts.conf /etc/fonts/
+	if [[ ! -d /usr/share/cursors/xorg-x11 ]]; then
+		mkdir -p /usr/share/cursors/xorg-x11
+	fi
+
+	cp -rv $(pwd -P)/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
+
+	if [[ ! -d /etc/fonts ]]; then
+		mkdir -p /etc/fonts
+	fi
+
+	cp -v $(pwd -P)/etc/fonts/fonts.conf /etc/fonts/fonts.conf
 fi
 
-mkdir -p /usr/src/initramfs/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys}
-cp --archive /dev/{null,console,tty,sda1} /usr/src/initramfs/dev/
-cp -r $REPO/usr/src/initramfs/* /usr/src/initramfs
-echo 'entering: /usr/src/initramfs'
-find . -print0 | cpio --null --create --verbose --format=newc | gzip --best > ./custom-initramfs.cpio.gz
+if ! (qlist -I | grep genkernel) > /dev/null; then
+	if [[ ! -d /usr/src/initramfs/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys} ]]; then
+		mkdir -p /usr/src/initramfs/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys}
+	fi
 
-echo 'success!'
+	cp -av /dev/{null,console,tty,sda1} /usr/src/initramfs/dev/
+	cp -rv $(pwd -P)/usr/src/initramfs/* /usr/src/initramfs
+	echo 'entering: /usr/src/initramfs'
+	find . -print0 | cpio --null --create --verbose --format=newc | gzip --best > ./custom-initramfs.cpio.gz
+fi
