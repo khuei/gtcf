@@ -35,7 +35,7 @@ if (qlist -I | grep layman) > /dev/null; then
 		mkdir -p /etc/layman
 	fi
 
-	cp -v $(pwd -P)S/etc/layman/layman.cfg /etc/layman/layman.cfg
+	cp -v $(pwd -P)/etc/layman/layman.cfg /etc/layman/layman.cfg
 fi
 
 if (qlist -I | grep libvirt) > /dev/null; then
