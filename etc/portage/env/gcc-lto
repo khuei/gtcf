@@ -1,7 +1,7 @@
 CC="gcc"
 CXX="g++"
 
-COMMON_CFLAGS="-march=native -mtune=native -O2 -ffunction-sections -fdata-sections -pipe"
+COMMON_CFLAGS="-march=native -mtune=native -O2 -pipe"
 COMMON_LDFLAGS="-Wl,-O2 -Wl,--as-needed -Wl,--gc-sections"
 
 CFLAGS="${COMMON_CFLAGS} -fuse-linker-plugin -flto"
