@@ -1,5 +1,5 @@
 /dev/sda1 /boot vfat noauto,noatime 1 2
-/dev/sda2 none swap sw 0 0
+/dev/sda2 none swap noauto,sw 0 0
 /dev/mapper/gentoo-root / ext4 defaults 0 0
 /dev/mapper/gentoo-var /var ext4 defaults 0 0
 /dev/sda4 /home ext4 defaults 0 0
