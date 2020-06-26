@@ -8,7 +8,7 @@ fi
 cp -v $(pwd -P)/etc/fstab /etc/fstab
 cp -v $(pwd -P)/etc/sysctl.conf /etc/sysctl.conf
 cp -v $(pwd -P)/usr/share/consolefonts/* /usr/share/consolefonts/
-cp -v $(pwd -P)/usr/share/fonts/* /usr/share/fonts/
+cp -rv $(pwd -P)/usr/share/fonts/* /usr/share/fonts/
 
 if (qlist -I | grep portage) > /dev/null; then
 	cp -rv $(pwd -P)/etc/portage/* /etc/portage/
