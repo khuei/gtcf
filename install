@@ -66,7 +66,7 @@ fi
 
 if (qlist -I | grep tmux) > /dev/null; then
 	for terminfo in $(ls "$(pwd -P)/etc/terminfo"); do
-		tic -sx $terminfo
+		tic -sx $(pwd -P)/etc/terminfo/$terminfo
 	done
 fi
 
