@@ -6,6 +6,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 cp -v $(pwd -P)/etc/fstab /etc/fstab
+cp -v $(pwd -P)/etc/issue /etc/issue
 cp -v $(pwd -P)/etc/sysctl.conf /etc/sysctl.conf
 cp -v $(pwd -P)/usr/share/consolefonts/* /usr/share/consolefonts/
 cp -rv $(pwd -P)/usr/share/fonts/* /usr/share/fonts/
