@@ -1,77 +1,64 @@
-#This file contains the optimization defaults that GentooLTO uses
-#More will be added in the future.
-#Sourcing this file will enable you to transparently receive these new settings
-#without intervention.  If this is not desirable, see the file make.conf.lto.defines for custom configurations.
+#This file contains the definitions for the optimization settings used by GentooLTO.
+#source this file directly in your make.conf if you want to cherry-pick settings
+#and don't want to use the make.conf.lto default configuration, defining the number of threads
+#to use during the LTO process beforehand:
 
-#To use this file, first define NTHREADS to the number of threads you want the LTO
-#processes to use on your system at the top of your make.conf:
+#NTHREADS="12"
 
-#NTHREADS="12" 
+#source make.conf.lto.defines
 
-#A good number is the number of hardware threads you have available on your system.
-#After this, but before any other variables are defined, source this file directly:
+#Guidelines:
+#* Your CFLAGS should contain ${FLTO} and, depending on your gcc, -fuse-linker-plugin
+#* Newer GCCs enable -fuse-linker-plugin by default.
+#* If you want Graphite, include "${GRAPHITE}" in your CFLAGS
+#* If you want -fipa-pta, include "${IPAPTA}" in your CFLAGS (undefined for now, issue #257)
+#* Anything else is up to you, such as -march, -pipe, -O{3,2,s,1}, etc...
+#* CXXFLAGS should be set to CFLAGS
+#* Optionally, set other *FLAGS for languages compiled with GCC as well (See make.conf.lto)
+#* LDFLAGS of your Gentoo profile should be respected.
+#  See make.conf.lto for more details.
 
-#source make.conf.lto
+#FLTO is of the form -flto[=n] where n is the number of threads to use during linking.
+#It's usually a good idea to set this to the number of hardware threads in your system
+FLTO="-flto=${NTHREADS}"
 
-#Then, afterwards, define your CFLAGS with your own options:
+#GRAPHITE contains Graphite specific optimizations and other optimizations that are disabled at O3
+#but don't influence the compiler's judgement.
+#With GCC 8.1.0, -ftree-loop-distribution is enabled by default at -O3
+GRAPHITE="-fgraphite-identity -floop-nest-optimize"
+#NOTE: To use graphite, make sure you have gcc compiled with graphite support (add graphite to your USE).  Otherwise GCC will complain!
 
-#CFLAGS="-march=native ${CFLAGS} -pipe"
+IPAPTA="-fipa-pta"
 
-#This enables your CFLAGS to inherit the default flags that GentooLTO uses.
-#Note that you may want to enable -falign-functions=32 if you use an Intel processor (Sandy Bridge or later).
-#See issue #164 for details.
+#IPAPTA contains -fipa* opts that are disabled by default in GCC.  These are interprocedural optimizations.  For now this is only -fipa-pta.
+#This option increases compile times, but can potentially produce better binaries, especially with LTO.
+#Essentially, it allows the compiler to look into called function bodies when performing alias analysis
 
-#Next, set your CXXFLAGS to CFLAGS:
+SEMINTERPOS="-fno-semantic-interposition"
 
-#CXXFLAGS="${CFLAGS}"
+# With -fno-semantic-interposition the compiler assumes that if interposition happens for functions the overwriting function will have precisely the same semantics (and side effects). Similarly if interposition happens for variables, the constructor of the variable will be the same. The flag has no effect for functions explicitly declared inline (where it is never allowed for interposition to change semantics) and for symbols explicitly declared weak.
 
-#Your CXXFLAGS should be a superset of your CFLAGS.  Most people will never need to add anything extra to their CXXFLAGS.
+NOCOMMON="-fno-common"
 
-#Your LDFLAGS should contain *ALL* of your CFLAGS for LTO to work.  It must receieve all optimization options, march, etc.
-#Fortunately, package.cflags takes care of this for you--no need to manually add your {C,CXX}FLAGS here or anywhere else.
-#If you modify LDFLAGS, ensure that your profile's LDFLAGS are respected by including them first:
+# This option only affects C code.  Only non-conformant C code needs -fcommon, which is enabled by default.  Clear Linux leaves this flag off by default.
+# We may enable this at some point.  For now, there's a lot of breakages to work through.
 
-#LDFLAGS="${LDFLAGS} -Wl,--your-modifications=here"
+SAFEST_FAST_MATH="-fno-math-errno -fno-trapping-math"
+SAFER_UNSAFE_MATH_OPTS="-fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math"
+SAFER_FAST_MATH="${SAFER_UNSAFE_MATH_OPTS} -fno-math-errno -ffinite-math-only -fno-rounding-math -fno-signaling-nans -fcx-limited-range -fexcess-precision=fast"
 
-#NOTE: your profile likely contains -Wl,--as-needed and -Wl,-O1.
-#The -Wl,-01 here is a separate option sent to the linker that optimizes shared object binary sizes
-#It is NOT related to the -O option given to gcc and has no bearing on that option.
-#For example, compiling using: -fuse-linker-plugin -flto -O3 -Wl,-O1:
-#This will produce an LTO binary with -O3
-#level optimization and also pass -O1 to the linker to reduce the shared object size.
+#These are flags left off by default that we're planning to start using.  Clear Linux uses these in lieu of full -ffast-math optimizations
+#They DO break compliance with ISO C++, so we'll be careful about introducing these.
+#Relevant discussion: https://gcc.gnu.org/ml/gcc/2017-09/msg00079.html
+#We may end up just going full -Ofast, with exceptions done in the usual way.
 
-#!!!Consider also using cpuid2cpuflags to set your CPU_FLAGS_* variable in your make.conf for packages that rely on explicit optimizations such as intrinsics!!!
+DEVIRTLTO="-fdevirtualize-at-ltrans"
 
-#Some quality of life things:
+#This allows GCC to perform devirtualization across object file boundaries using LTO.  It's off by default because it
+#increases compilation time.
 
-#You may want to lower Portage's niceness level, seeing as your emerges will take longer.
-#The effectiveness of this depends on what CPU scheduler you use.
+NOPLT="-fno-plt"
 
-#PORTAGE_NICENESS=15
-
-#LTO takes a lot more memory than non-LTO processes.  You will likely not be able to emerge many packages
-#in parallel unless you have a lot of memory available.  As an alternative, consider setting MAKEOPTS
-#to parallelize according to NTHREADS, which should avoid that problem.  You may consider balancing between
-#emerging in parallel with parallizing make as a compromise.
-
-#MAKEOPTS="-j${NTHREADS}"
-
-#Lastly, for cmake packages, you may want to set the default generator to Ninja.
-#It is considerably faster than GNU make and can help build times.
-
-#CMAKE_MAKEFILE_GENERATOR=ninja
-
-#Only one package, kde-plasma/kinfocenter, needs CMAKE_MAKEFILE_GENERATOR=emake.  It can be overridden
-#in your own package.cflags/kinfocenter.conf file like so:
-
-#kde-plasma/kinfocenter CMAKE_MAKEFILE_GENERATOR=emake
-
-#This concludes setup for GentooLTO using the default settings.
-#If you want to cherry pick these settings, source make.conf.lto.defines directly
-#and read the comments in that file.
-
-source make.conf.lto.defines
-
-#Thanks to issue #49, no action necessary for preventing stripping of static libraries
-
-CFLAGS="-O3 ${GRAPHITE} ${DEVIRTLTO} ${IPAPTA} ${SEMINTERPOS} ${FLTO} -fuse-linker-plugin"
+#This option omits the PLT from the executable, making calls go through the GOT directly.
+#It inhibits lazy binding, so this is not enabled by default.  If you use prelink, this is
+#strictly better than lazy binding.
