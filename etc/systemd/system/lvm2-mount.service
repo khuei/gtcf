@@ -10,6 +10,8 @@ ExecStart=/sbin/lvm vgchange -a ly gentoo
 ExecStart=/sbin/lvm vgscan --mknodes
 ExecStart=/sbin/dmsetup mknodes
 ExecStart=/bin/mount -a
+ExecStart=/sbin/swapon -a
+RemainAfterExit=no
 
 [Install]
-WantedBy=sysinit.target
+WantedBy=multi-user.target
