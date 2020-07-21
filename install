@@ -69,7 +69,7 @@ fi
 
 if (qlist -I | grep tmux) > /dev/null; then
 	for terminfo in "$REPO"/etc/terminfo/*; do
-		tic -sx "$REPO/etc/terminfo/$terminfo"
+		tic -sx "$REPO"/etc/terminfo/"$terminfo"
 	done
 fi
 
