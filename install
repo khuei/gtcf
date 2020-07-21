@@ -1,105 +1,105 @@
 #!/bin/sh
 
-if [ "$EUID" -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "Please run as root."
 	exit 0
 fi
 
-REPO=$(dirname $0)
+REPO=$(dirname "$0")
 
-cp -v $REPO/etc/fstab /etc/fstab
-cp -v $REPO/etc/issue /etc/issue
-cp -v $REPO/etc/sysctl.conf /etc/sysctl.conf
-cp -v $REPO/usr/share/consolefonts/* /usr/share/consolefonts/
-cp -rv $REPO/usr/share/fonts/* /usr/share/fonts/
+cp -v "$REPO"/etc/fstab /etc/fstab
+cp -v "$REPO"/etc/issue /etc/issue
+cp -v "$REPO"/etc/sysctl.conf /etc/sysctl.conf
+cp -v "$REPO"/usr/share/consolefonts/* /usr/share/consolefonts/
+cp -rv "$REPO"/usr/share/fonts/* /usr/share/fonts/
 
 if (qlist -I | grep portage) > /dev/null; then
-	cp -rv $REPO/etc/portage/* /etc/portage/
+	cp -rv "$REPO"/etc/portage/* /etc/portage/
 fi
 
 if (qlist -I | grep ccache) > /dev/null; then
-	if [[ ! -d /var/tmp/ccahe ]]; then
+	if [ ! -d /var/tmp/ccache ]; then
 		mkdir -p /var/tmp/ccache
 	fi
 
-	cp -v $REPO/var/tmp/ccache/ccache.conf /var/tmp/ccache/ccache.conf
+	cp -v "$REPO"/var/tmp/ccache/ccache.conf /var/tmp/ccache/ccache.conf
 fi
 
 if (qlist -I | grep genkernel) > /dev/null; then
-	cp -v $REPO/etc/genkernel.conf /etc/genkernel.conf
+	cp -v "$REPO"/etc/genkernel.conf /etc/genkernel.conf
 fi
 
 if (qlist -I | grep gentoo-sources) > /dev/null; then
-	cp -v $REPO/usr/src/linux/.config /usr/src/linux/.config
+	cp -v "$REPO"/usr/src/linux/.config /usr/src/linux/.config
 fi
 
 if (qlist -I | grep layman) > /dev/null; then
-	if [[ ! -d /etc/layman ]]; then
+	if [ ! -d /etc/layman ]; then
 		mkdir -p /etc/layman
 	fi
 
-	cp -v $REPO/etc/layman/layman.cfg /etc/layman/layman.cfg
+	cp -v "$REPO"/etc/layman/layman.cfg /etc/layman/layman.cfg
 fi
 
 if (qlist -I | grep libvirt) > /dev/null; then
-	if [[ ! -d /etc/libvirt ]]; then
+	if [ ! -d /etc/libvirt ]; then
 		mkdir -p /etc/libvirt
 	fi
 
-	cp -v $REPO/etc/libvirt/libvirtd.conf /etc/libvirt/libvirtd.conf
+	cp -v "$REPO"/etc/libvirt/libvirtd.conf /etc/libvirt/libvirtd.conf
 fi
 
 if (qlist -I | grep systemd) > /dev/null; then
-	if [[ ! -d /etc/systemd ]]; then
+	if [ ! -d /etc/systemd ]; then
 		mkdir -p /etc/systemd
 	fi
 
-	cp -rv $REPO/etc/systemd/* /etc/systemd/
+	cp -rv "$REPO"/etc/systemd/* /etc/systemd/
 
-	if [[ ! -d /etc/udev ]]; then
+	if [ ! -d /etc/udev ]; then
 		mkdir -p /etc/udev
 	fi
 
-	cp -rv $REPO/etc/udev/* /etc/udev/
+	cp -rv "$REPO"/etc/udev/* /etc/udev/
 
-	cp -rv $REPO/boot/loader/* /boot/loader/
+	cp -rv "$REPO"/boot/loader/* /boot/loader/
 
-	cp -v $REPO/etc/vconsole.conf /etc/vconsole.conf
+	cp -v "$REPO"/etc/vconsole.conf /etc/vconsole.conf
 fi
 
 if (qlist -I | grep tmux) > /dev/null; then
-	for terminfo in $(ls "$REPO/etc/terminfo"); do
-		tic -sx $REPO/etc/terminfo/$terminfo
+	for terminfo in "$REPO"/etc/terminfo/*; do
+		tic -sx "$REPO/etc/terminfo/$terminfo"
 	done
 fi
 
 if (qlist -I | grep xorg-server) > /dev/null; then
-	if [[ ! -d /etc/X11 ]]; then
+	if [ ! -d /etc/X11 ]; then
 		mkdir -p /etc/X11
 	fi
 
-	cp -rv $REPO/etc/X11/* /etc/X11/
+	cp -rv "$REPO"/etc/X11/* /etc/X11/
 
-	if [[ ! -d /usr/share/cursors/xorg-x11 ]]; then
+	if [ ! -d /usr/share/cursors/xorg-x11 ]; then
 		mkdir -p /usr/share/cursors/xorg-x11
 	fi
 
-	cp -rv $REPO/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
+	cp -rv "$REPO"/usr/share/cursors/xorg-x11/* /usr/share/cursors/xorg-x11/
 
-	if [[ ! -d /etc/fonts ]]; then
+	if [ ! -d /etc/fonts ]; then
 		mkdir -p /etc/fonts
 	fi
 
-	cp -v $REPO/etc/fonts/fonts.conf /etc/fonts/fonts.conf
+	cp -v "$REPO"/etc/fonts/fonts.conf /etc/fonts/fonts.conf
 fi
 
 if ! (qlist -I | grep genkernel) > /dev/null; then
-	if [[ ! -d /usr/src/initramfs/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys} ]]; then
+	if [ ! -d /usr/src/initramfs/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys} ]; then
 		mkdir -p /usr/src/initramfs/{bin,dev,etc,lib,lib64,mnt/root,proc,root,sbin,sys}
 	fi
 
 	cp -av /dev/{null,console,tty,sda1} /usr/src/initramfs/dev/
-	cp -rv $REPO/usr/src/initramfs/* /usr/src/initramfs
+	cp -rv "$REPO"/usr/src/initramfs/* /usr/src/initramfs
 	echo 'entering: /usr/src/initramfs'
 	find . -print0 | cpio --null --create --verbose --format=newc | gzip --best > ./custom-initramfs.cpio.gz
 fi
