@@ -14,4 +14,4 @@ ExecStart=/sbin/swapon -a
 RemainAfterExit=no
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=sysinit.target
