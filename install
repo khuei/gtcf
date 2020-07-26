@@ -8,7 +8,7 @@ fi
 REPO=$(dirname "$0")
 
 for location in "boot" "etc" "usr" "var"; do
-	rsync -ahv "$REPO/$location/" "/$location"
+	rsync -Kahv "$REPO/$location/" "/$location"
 done
 
 for terminfo in "$REPO"/terminfo/*; do
