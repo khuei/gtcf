@@ -12,5 +12,5 @@ for location in "boot" "etc" "usr" "var"; do
 done
 
 for terminfo in "$REPO"/terminfo/*; do
-	tic -sx $terminfo
+	tic -sx "$terminfo"
 done
