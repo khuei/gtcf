@@ -1,1 +1,1 @@
-dev-lang/rust nightly
+dev-lang/rust nightly rls rustfmt
