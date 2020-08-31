@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# (C) Martin V\"ath <martin@mvath.de>
+# (C) Martin V\"ath <martin at mvath.de>
+# SPDX-License-Identifier: GPL-2.0-only
 
 ALL_LOCALES="
 aa
