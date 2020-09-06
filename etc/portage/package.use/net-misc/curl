@@ -1,1 +1,1 @@
-net-misc/curl -adns
+net-misc/curl -adns -gnutls
