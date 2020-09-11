@@ -12,7 +12,9 @@ for location in "boot" "etc" "usr" "var"; do
 		echo 'rsync is not founded. is it installed?'
 		exit 1
 	}
-	rsync -ahKv "$REPO/$location/" "/$location"
+
+	[ -d "$location" ] && \
+		rsync -ahKv "$REPO/$location/" "/$location"
 done
 
 for terminfo in "$REPO"/terminfo/*; do
