@@ -1,1 +1,1 @@
-net-misc/spice-gtk usbredir
+net-misc/spice-gtk usbredir gtk3
