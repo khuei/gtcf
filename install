@@ -7,14 +7,14 @@ fi
 
 REPO=$(dirname "$0")
 
-for location in "boot" "etc" "usr" "var"; do
+for directory in "boot" "etc" "usr" "var"; do
 	[ "$(command -v rsync)" ] || {
 		echo 'rsync is not founded. is it installed?'
 		exit 1
 	}
 
-	[ -d "$location" ] && \
-		rsync -ahKv "$REPO/$location/" "/$location"
+	[ -d "$directory" ] && \
+		rsync -ahKv "$REPO/$directory/" "/$directory"
 done
 
 for terminfo in "$REPO"/terminfo/*; do
