@@ -2,7 +2,7 @@
 
 [ "$(id -u)" -eq 0 ] || {
 	echo "Please run as root."
-	exit 0
+	exit 1
 }
 
 REPO=$(dirname "$0")
