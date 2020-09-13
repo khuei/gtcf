@@ -1,9 +1,9 @@
 #!/bin/sh
 
-if [ "$(id -u)" -ne 0 ]; then
+[ "$(id -u)" -eq 0 ] || {
 	echo "Please run as root."
 	exit 0
-fi
+}
 
 REPO=$(dirname "$0")
 
