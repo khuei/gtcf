@@ -9,7 +9,7 @@ REPO=$(dirname "$0")
 
 for directory in "boot" "etc" "usr" "var"; do
 	[ "$(command -v rsync)" ] || {
-		echo 'rsync is not founded. is it installed?'
+		echo 'rsync is not founded. is it installed?' 1>&2
 		exit 1
 	}
 	[ -d "$directory" ] && rsync -ahKv "$REPO/$directory/" "/$directory"
@@ -17,7 +17,7 @@ done
 
 for terminfo in "$REPO"/terminfo/*; do
 	[ "$(command -v tic)" ] || {
-		echo 'tic is not founded. is it installed?'
+		echo 'tic is not founded. is it installed?' 1>&2
 		exit 1
 	}
 	tic -sx "$terminfo"
