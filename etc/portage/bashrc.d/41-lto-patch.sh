@@ -1,9 +1,9 @@
-LTOPatch() {
+lto_patch() {
 	# Lifted straight from the Portage sources
 	# Working directory is set to ${HOME} by default
 	# Set it properly for patch application
 
-	if [[ -d $S ]] ; then
+	if [[ -d $S ]]; then
 		cd "${S}"
 	elif ___eapi_has_S_WORKDIR_fallback; then
 		cd "${WORKDIR}"
@@ -72,4 +72,4 @@ LTOPatch() {
 
 }
 
-BashrcdPhase prepare LTOPatch
+bashrcd_phase prepare lto_patch

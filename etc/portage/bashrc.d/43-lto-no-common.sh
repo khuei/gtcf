@@ -13,4 +13,4 @@ nocommon_configure() {
 	fi
 }
 
-BashrcdPhase configure nocommon_configure
+bashrcd_phase configure nocommon_configure

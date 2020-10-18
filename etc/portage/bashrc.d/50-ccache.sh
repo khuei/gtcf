@@ -5,38 +5,40 @@
 # Portage explicitly unsets all CCACHE_* variables in each phase.
 # Therefore, we save them to BASHRCD_CCACHE_* in the setup phase;
 # in all later phases, we restore CCACHE_* from these variables
-CcacheSetup() {
+ccache_setup() {
 	local i
 	: ${CCACHE_BASEDIR=${PORTAGE_TMPDIR:-/var/tmp}/portage}
 	: ${CCACHE_SLOPPINESS='file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches,pch_defines'}
 	: ${CCACHE_COMPRESS=true}
-	if BashrcdTrue $USE_NONGNU && BashrcdTrue $CCACHE_CPP2_OPTIONAL
-	then	: ${CCACHE_CPP2=true}
+	if bashrcd_true $USE_NONGNU && bashrcd_true $CCACHE_CPP2_OPTIONAL; then
+		: ${CCACHE_CPP2=true}
 	fi
 	# Default to NOHASHDIR unless contrary is specified
-	BashrcdTrue "${CCACHE_HASHDIR-}" || CCACHE_NOHASHDIR=true
-	for i in ${!CCACHE_*}
-	do	if eval "BashrcdTrue \$$i"
-		then	eval BASHRCD_$i=\$$i
+	bashrcd_true "${CCACHE_HASHDIR-}" || CCACHE_NOHASHDIR=true
+	for i in ${!CCACHE_*}; do
+		if eval "bashrcd_true \$$i"; then
+			eval BASHRCD_$i=\$$i
 			export $i
-		else	unset $i
+		else
+			unset $i
 		fi
 	done
-CcacheRestore() {
-	local i j
-	unset ${!CCACHE_*}
-	for i in ${!BASHRCD_CCACHE_*}
-	do	j=${i##BASHRCD_}
-		eval $j=\$$i
-		export $j
-	done
-}
+
+	ccache_restore() {
+		local i j
+		unset ${!CCACHE_*}
+		for i in ${!BASHRCD_CCACHE_*}
+		do	j=${i##BASHRCD_}
+			eval $j=\$$i
+			export $j
+		done
+	}
 }
 
-CcacheRestore() {
-:
+ccache_restore() {
+	:
 }
 
-# Register CcacheRestore before CcacheSetup to save time in setup phase
-BashrcdPhase all CcacheRestore
-BashrcdPhase setup CcacheSetup
+# Register ccache_restore before ccache_setup to save time in setup phase
+bashrcd_phase all ccache_restore
+bashrcd_phase setup ccache_setup

@@ -351,41 +351,41 @@ zh_TW.UTF-8
 zu
 "
 
-LocalePurgeNokeep() {
+locale_purge_no_keep() {
 	local locale_keep
-	for locale_keep in $KEEP_LOCALES
-	do	case $1 in
+	for locale_keep in $KEEP_LOCALES; do
+		case $1 in
 		$locale_keep)
-			return 1;;
+			return 1 ;;
 		esac
 	done
 }
 
-LocalePurgeMain() {
+locale_purge_main() {
 	local locale_list locale_item locale_cmd
 	locale_list=
-	for locale_item in $ALL_LOCALES ${ALL_LOCALES_ADD-}
-	do	[ -n "$locale_item" ] && LocalePurgeNokeep "$locale_item" && \
+	for locale_item in $ALL_LOCALES ${ALL_LOCALES_ADD-}; do
+		[ -n "$locale_item" ] && locale_purge_no_keep "$locale_item" && \
 			locale_list=$locale_list' '$locale_item
 	done
-	locale_cmd='for d
-do	for l in $locale_list
-do	if test -d "$d/$l$k"
-then	rm -rvf -- "$d/$l"
-fi
-done
+	locale_cmd='for d; do
+	for l in $locale_list; do
+		if test -d "$d/$l$k"; then
+			rm -rvf -- "$d/$l"
+		fi
+	done
 done'
 	export locale_list
 	shell=`command -v sh` || shell=
 	: ${shell:=/bin/sh}
-	if BashrcdTrue $LOCALEPURGE
-	then	einfo 'removing undesired locales'
+	if bashrcd_true $LOCALEPURGE; then
+		einfo 'removing undesired locales'
 		find "$ED" -name locale -type d \
 			-exec "$shell" -c "k='/LC_MESSAGES'
 $locale_cmd" sh '{}' '+'
 	fi
-	if BashrcdTrue $MANPURGE
-	then	einfo 'removing undesired manpages'
+	if bashrcd_true $MANPURGE; then
+		einfo 'removing undesired manpages'
 		find "$ED" -name man -type d \
 			-exec "$shell" -c "k=
 $locale_cmd" sh '{}' '+'
@@ -393,20 +393,22 @@ $locale_cmd" sh '{}' '+'
 	unset locale_list
 }
 
-LocalePurge() {
-	if BashrcdTrue $NOLOCALEPURGE || {
-		! BashrcdTrue $LOCALEPURGE && ! BashrcdTrue $MANPURGE
-	} || [ -z "${KEEP_LOCALES++}" ]
-	then	return 0
+locale_purge() {
+	if bashrcd_true $NOLOCALEPURGE || {
+		! bashrcd_true $LOCALEPURGE && ! bashrcd_true $MANPURGE
+	} || [ -z "${KEEP_LOCALES++}" ]; then
+		return 0
 	fi
 	case $- in
 	*f*)
-		LocalePurgeMain;;
+		locale_purge_main
+		;;
 	*)
 		set -f
-		LocalePurgeMain
-		set +f;;
+		locale_purge_main
+		set +f
+		;;
 	esac
 }
 
-BashrcdPhase preinst LocalePurge
+bashrcd_phase preinst locale_purge
