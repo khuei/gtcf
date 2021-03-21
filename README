@@ -1,0 +1,11 @@
+gentoo-config
+_______________________________________________________________________________
+
+my gentoo system configuration files
+
+Installation
+_______________________________________________________________________________
+
+run the following command to run install script:
+
+    ./install
