@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 5.13.0-gentoo Kernel Configuration
+# Linux/x86 5.13.2-gentoo Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="gcc (Gentoo 10.3.0 p1) 10.3.0"
 CONFIG_CC_IS_GCC=y
@@ -1901,7 +1901,13 @@ CONFIG_WLAN_VENDOR_MICROCHIP=y
 # CONFIG_USB_NET_RNDIS_WLAN is not set
 # CONFIG_VIRT_WIFI is not set
 # CONFIG_WAN is not set
+
+#
+# Wireless WAN
+#
 # CONFIG_WWAN is not set
+# end of Wireless WAN
+
 # CONFIG_VMXNET3 is not set
 # CONFIG_FUJITSU_ES is not set
 CONFIG_NET_FAILOVER=y
@@ -4171,7 +4177,6 @@ CONFIG_EDAC=y
 # CONFIG_EDAC_SKX is not set
 # CONFIG_EDAC_I10NM is not set
 # CONFIG_EDAC_PND2 is not set
-# CONFIG_EDAC_IGEN6 is not set
 CONFIG_RTC_LIB=y
 CONFIG_RTC_MC146818_LIB=y
 CONFIG_RTC_CLASS=y
@@ -5452,7 +5457,6 @@ CONFIG_GENTOO_LINUX_INIT_SYSTEMD=y
 #
 # Enable Kernel Self Protection Project Recommendations
 #
-CONFIG_GENTOO_KERNEL_SELF_PROTECTION=y
 
 #
 # Architecture Specific Self Protection Project Recommendations
