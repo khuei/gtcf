@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 5.14.0-gentoo Kernel Configuration
+# Linux/x86 5.14.2-gentoo Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="gcc (Gentoo 11.2.0 p1) 11.2.0"
 CONFIG_CC_IS_GCC=y
@@ -133,7 +133,8 @@ CONFIG_BSD_PROCESS_ACCT=y
 # CONFIG_BSD_PROCESS_ACCT_V3 is not set
 CONFIG_TASKSTATS=y
 CONFIG_TASK_DELAY_ACCT=y
-# CONFIG_TASK_XACCT is not set
+CONFIG_TASK_XACCT=y
+CONFIG_TASK_IO_ACCOUNTING=y
 # CONFIG_PSI is not set
 # end of CPU/Task time and stats accounting
 
