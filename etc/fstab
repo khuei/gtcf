@@ -1,6 +1,4 @@
-/dev/sda1 /boot vfat noauto,noatime 1 2
-/dev/mapper/gentoo-root / ext4 defaults 0 0
-/dev/mapper/gentoo-var /var ext4 defaults 0 0
-/dev/mapper/gentoo-home /home ext4 defaults 0 0
+/dev/nvme0n1p1 /boot vfat noauto,noatime 1 2
+/dev/nvme0n1p3 / ext4 defaults 0 0
 proc  /proc   proc    nosuid,nodev,noexec,hidepid=2,gid=wheel 0 0
-tmpfs /var/tmp/portage tmpfs size=6G,uid=portage,gid=portage,mode=775,noatime 0 0
+tmpfs /var/tmp/portage tmpfs size=10G,uid=portage,gid=portage,mode=775,noatime 0 0
